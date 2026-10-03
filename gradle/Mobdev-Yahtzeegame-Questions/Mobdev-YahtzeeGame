@@ -1,0 +1,45 @@
+Matt Linux B. Bondoc                                                      MOBDEV:ACTIVITY Yahtzee Game
+BS CPE4 -A                                                                       10/03/2026
+
+
+SECTION 1 — Questions: Android, ViewModel, Threads, and Coroutines
+Answer these questions after completing Parts 1–11.
+1. Random Number Generation
+What values can this expression generate?
+Random.nextInt(1, 7)
+
+Why is 7 not included?
+Answer: It can give 1, 2, 3, 4, 5 or 6. The 7 is not included because in Random.nextInt(1, 7) the first number is included but the last number is left out. So the result is always from 1 to 6, which are the faces of a die.
+2. Main Thread
+Why did this cause the application to stop responding normally?
+Thread.sleep(100)
+
+Answer: The button click runs on the main thread, and the main thread is the one that draws the screen and listens to my touches. Thread.sleep(100) makes it stop and wait, and the code does this 10 times (about 1 second). While it is waiting, the screen cannot update, so the app looks frozen.
+3. ViewModel and Background Work
+Does creating a ViewModel automatically cause all of its functions to execute on a background thread?
+Explain.
+Answer: No. Creating a ViewModel does not move its functions to a background thread. A function runs on whatever thread calls it. Since the button calls it from the main thread, it still runs on the main thread. To do work in the background I have to start a Thread or a coroutine myself.
+4. Traditional Thread
+Why did the Thread implementation require:
+Handler(Looper.getMainLooper())
+
+Answer: The Thread runs in the background, but only the main thread is allowed to change the screen. Handler(Looper.getMainLooper()) lets the background thread send the new dice values back to the main thread, so the UI can show them.
+5. Coroutine
+What is the difference between:
+Thread.sleep(100)
+
+and:
+delay(100)
+
+Answer: Thread.sleep(100) blocks the thread. It stops everything on that thread for 100 ms, so the main thread cannot draw the screen. delay(100) only pauses the coroutine, not the thread. The thread stays free to do other work, like updating the UI, and the coroutine continues after 100 ms.
+6. viewModelScope
+What is viewModelScope?
+Why is it useful when performing coroutine work from a ViewModel?
+Answer: viewModelScope is a ready-made place for coroutines that belongs to the ViewModel. It is useful because the coroutines are cancelled automatically when the ViewModel is cleared (for example when the screen is closed). This means no leftover work keeps running, and I don't have to stop it manually.
+7. Thread vs Coroutine
+Compare the two implementations.
+Which code requires more manual thread management?
+Which implementation is easier to read?
+Explain your answer.
+
+Answer: The Thread version needs more manual thread management. I had to create the thread, start it, and use a Handler to go back to the main thread. The coroutine version is easier to read. It is just a simple repeat loop with delay, in one place, and viewModelScope takes care of the threads for me.
