@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.yahtzeegame.ui.theme.YahtzeeGameTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
